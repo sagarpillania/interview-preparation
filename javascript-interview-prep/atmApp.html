@@ -14,6 +14,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         .outer{
             width: 40vw;
@@ -43,7 +46,10 @@
         #transactions{
             margin-left: 20px;
         }
-
+        .btnn{
+            margin: 5px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -60,6 +66,12 @@
                 <p id="display"></p>
                 <ul id="transactions"></ul>
             </div>
+        </div>
+    </div>
+    <div class="counterApp outer">
+        <button onclick="createCounter()">Create Counter</button>
+        <div id="counters">
+            <div id="counterTab"></div>
         </div>
     </div>
     <script>
@@ -112,7 +124,37 @@
                 history.appendChild(li);
             }
         }
-
+// -----------------------------------------------------------------------------------
+        var counterTabs=document.getElementById("counterTab");
+        function createCounter(){
+            let counterBox = document.createElement("div");
+            let para = document.createElement("p");
+            counterTabs.appendChild(counterBox);
+            let btnn1=document.createElement("button");
+            btnn1.className="btnn";
+            let btnn2=document.createElement("button");
+            btnn1.innerText="+";
+            counterBox.appendChild(btnn1);
+            btnn2.innerText="-";
+            btnn2.className="btnn";
+            counterBox.appendChild(btnn2);
+            let count=0;
+            para.innerText=`Count is: ${count}`;
+            btnn1.addEventListener("click",function(){
+                count++;
+                para.innerText=`Count is: ${count}`;
+                return count;
+            });
+            btnn2.addEventListener("click",function(){
+                if(count<1){
+                    return 0;
+                }
+                count--;
+                para.innerText=`Count is: ${count}`;
+                return count;
+            });
+            counterBox.appendChild(para);
+        }
     </script>
     
 </body>
