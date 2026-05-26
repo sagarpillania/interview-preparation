@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atm App</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .outer{
+            width: 40vw;
+            min-height: 40vh;
+            border: 2px solid black;
+            margin-top: 10px;
+        }
+        .atm{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+        }
+        .btn{
+            background-color: lightblue;
+            border-radius: 5px;
+            font-size: 20px;
+            padding: 5px;
+            margin: 5px;
+        }
+        input{
+            width: 70%;
+            height: 30px;
+        }
+        #transactions{
+            margin-left: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="outer">
+        <p id="counter"></p>
+        <div class="atm">
+            <input type="text" placeholder="Enter Amount"/>
+            <div class="btns">
+                <button class="btn" id="deposit" onclick="deposit()">Deposit</button>
+                <button class="btn"id="withdraw" onclick="withdraw()">Withdraw</button>
+                <button class="btn" id="balance" onclick="showBalance()">Show Balance</button>
+                <button class="btn" id="rate" onclick="ratePer()">Rate %</button>
+                <button class="btn" id="rate" onclick="showTransaction()">Show Transactions</button>
+                <p id="display"></p>
+                <ul id="transactions"></ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        let balance=0;
+        let transactions=[];
+        let p=document.getElementById("display");
+        let counter=document.getElementById("counter");
+
+        function createTransacationCounter (){
+            let count=0;
+            return function counter(){
+                count++;
+                return count;
+            }
+        }
+        const counterr=createTransacationCounter();
+
+        
+        function deposit(){
+            let enteredInput=Number(document.querySelector("input").value);
+            balance+=enteredInput;
+            transactions.push(`deposit: ${enteredInput}`);
+            p.innerHTML=`Deposited: ${enteredInput} and Now Balance is : ${balance}`;
+            counter.innerHTML=`Transaction count is: ${counterr()}`;
+        }
+        function ratePer(){
+            let enteredInput=Number(document.querySelector("input").value);
+            balance+=(balance*enteredInput)/100;
+        }
+        function withdraw(){
+            let enteredInput=Number(document.querySelector("input").value);
+            if(enteredInput>balance){
+                return p.innerHTML="Error: Balance not sufficient";
+            }
+            transactions.push(`Withdrawl Amount: ${enteredInput}`);
+            balance=balance-enteredInput;
+            p.innerHTML=`Withdrawed: ${enteredInput} and Now Balance is : ${balance}`;
+            counter.innerHTML=`Transaction count is: ${counterr()}`;
+        }
+        function showBalance(){
+            p.innerHTML=`Remaining Balance is: ${balance}`;
+        }
+        function showTransaction(){
+            let history=document.getElementById("transactions");
+            history.innerHTML="";
+
+            for(const item of transactions){
+                let li=document.createElement("li");
+                li.innerText=item;
+                history.appendChild(li);
+            }
+        }
+
+    </script>
+    
+</body>
+</html>
