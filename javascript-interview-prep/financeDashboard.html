@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40vw;
+            min-height: 60vh;
+            border: 2px solid black;
+            gap: 10px;
+        }
+        .cards{
+            width: 80%;
+            display: flex;
+            align-items:center;
+            justify-content:space-around;
+            gap: 10px;
+
+        }
+        .cardTab{
+            width: 120px;
+            height: 120px;
+            border: 2px solid black;
+        }
+        /* The CSS to make the borders beautiful */
+        .transactionsTable {
+            width: 90%;
+            border-collapse: collapse; /* Prevents double borders/gaps */
+            margin-top: 15px;
+            font-family: sans-serif;
+            margin-bottom: 10px;
+        }
+        /* Apply borders to both header cells and standard data cells */
+        .transactionsTable th, 
+        .transactionsTable td {
+            border: 1px solid #0f0f0f; /* Clean light gray border */
+            padding: 12px 8px;          /* Gives the cells some breathing room */
+            text-align: left;
+        }
+        /* Make the header look distinct */
+        .transactionsTable th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">Bank Account
+        <div class="cards">
+            <div class="cardTab" id="Balance">Current Balance</div>
+            <div class="cardTab" id="Deposit">Total Deposit</div>
+            <div class="cardTab" id="Withdrawl">Total Withdrawl</div>
+        </div>
+        <h3>Transactions Table</h3>
+        <table class="transactionsTable" >
+            <thead> 
+                <tr>
+                    <th id="id">Id</th>
+                    <th id="type">Type</th>
+                    <th id="amount">Amount</th>
+                    <th id="status">Status</th>
+                </tr>
+            </thead>
+            <tbody id="transactionsRows">
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const transactions = [
+            { id: 1, type: "deposit", amount: 1000, status: "success" },
+            { id: 2, type: "withdraw", amount: 300, status: "success" },
+            { id: 3, type: "deposit", amount: 700, status: "success" },
+            { id: 4, type: "withdraw", amount: 1200, status: "failed" },
+            { id: 5, type: "interest", amount: 100, status: "success" },
+        ];
+        let balance=document.getElementById("Balance");
+        let deposit=document.getElementById("Deposit");
+        let withdrawl=document.getElementById("Withdrawl");
+        let para=document.createElement("p");
+        balance.addEventListener("click",function(){
+            const currbal=transactions.reduce((acc,curr)=>{
+                if(curr.status!=="success"){
+                    return acc; // ki fail hua tb tk jitna acc hua vo dei do and next pr chlo
+                }
+                switch (curr.type){
+                    case "deposit":
+                    case "interest":
+                        return acc+curr.amount;
+                    case "withdraw":
+                        return acc-curr.amount;
+                    default:
+                        return acc;
+                }
+            },0);
+            para.innerText=currbal;
+            balance.appendChild(para);
+        });
+        deposit.addEventListener("click",function(){
+            const successDeposit= transactions.filter((item)=>item.type=="deposit" && item.status=="success").reduce((acc,curr)=>{
+                return acc+curr.amount;
+            },0);
+            para.innerText=successDeposit;
+            deposit.appendChild(para);
+               
+            })
+        withdrawl.addEventListener("click",function(){
+            const successWithdrawl= transactions.filter((item)=>item.type=="withdraw" && item.status=="success").reduce((acc,curr)=>{
+                return acc+curr.amount;
+            },0);
+            // let para=document.createElement("p");
+            para.innerText=successWithdrawl;
+            withdrawl.appendChild(para);
+        })
+
+        let tableData=document.getElementById("transactionsRows");
+        const rowHtml=transactions.map((item)=>{
+            return `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.type}</td>
+                    <td>${item.amount}</td>
+                    <td>${item.status}</td>
+                </tr>
+            `
+        }).join("");
+        tableData.innerHTML=rowHtml;
+    </script>
+</body>
+</html>
