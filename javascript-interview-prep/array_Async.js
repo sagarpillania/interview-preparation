@@ -113,7 +113,7 @@ const successDeposit= transactions.filter((item)=>item.type=="deposit" && item.s
 },0);
 console.log(" Total successful deposits.",successDeposit);
 
-// Q5) Use reduce() to calculate current balance.
+// Q5) Use reduce() to calculate current balance...
 
 const currbal=transactions.reduce((acc,curr)=>{
     if(curr.status!=="success"){
