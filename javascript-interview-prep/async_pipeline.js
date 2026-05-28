@@ -1,24 +1,24 @@
 // Callback-> Promises -> Async Await
 
-// CALLBACK
+// CALLBACK -> basically ek function jisko hm bhej rhe hai kisi aur function mei and bol rhe hai isko execute krdena jab mann kre apka. 
 
-// function Wm(clothes,done){
-//     console.log("Washing Started");
-//     setTimeout(()=>{
-//         console.log("Washing finished");
-//         done();
-//     },3000);
-// }
+function Wm(clothes,done){
+    console.log("Washing Started");
+    setTimeout(()=>{
+        console.log("Washing finished");
+        done(); //idhr call back function call ho rha hai Wm function ki mrzi pr = inverison of control
+    },3000);
+}
 
-// Wm("shirts", function done(){
-//     console.log("Take clothes out")
-// });
+Wm("shirts", function done(){
+    console.log("Take clothes out")
+});
 
 //Real world example:--------------> 
 // function getProfile(id) {
 //     console.log("Step 1: Code starts");
 //     User.findOne({ id: id }, function(err, userFromDB) {
-//         // This is the instruction manual. It gets packed away for later.
+//         // ye dusra callback hai ki jb user mil jaye toh ye log krdena console mei 
 //         console.log("Step 3: Database responded! User is:", userFromDB.name);
 //     });
 //     console.log("Step 2: Code ends");
