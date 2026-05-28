@@ -28,10 +28,11 @@ Wm("shirts", function done(){
 
 // Need of Promise because of callback HELL - Nesting of callbacks, inversion of control(kiske pass h control)
 
-// ____________-PROMISES___________________
-// Promise- special JS object and it represent the eventual result or rejection of an async operation. ek tarah ka data placeholder hai jab hm req krte hai server se data ke liye toh JS kehta hai ye mene ek empty promise obj bnaya ha toh jisme mere pass abhi data nahi hai but i promise mei dei deta hu data usme kuch seconds ke baad.
-// Promise have three stages- penidng, resolve or reject and after any of ot called then promise terminates.
-// penidng- waiting for db to reponse the requested data. , res= data recieved and given, rej= error
+//-------------------------------   PROMISES  ------------------------------------------------
+
+// Promise- special JS object and it represent the eventual result or rejection of an async operation. ek tarah ka data placeholder hai jab hm req krte hai server se data ke liye toh JS kehta hai ye mene ek empty promise obj bnaya ha toh jisme mere pass abhi data nahi hai(undefined) and state =pending,  but i promise mei dei deta hu data usme kuch seconds ke baad.
+// Promise have three stages- pending, resolve/fulfilled or reject and after any of it called then promise terminates.
+// pending- waiting for db to reponse the requested data. , res= data recieved and given, rej= error
 
 const myPromise=new Promise((resolve,reject)=>{
     console.log("Point 1");
@@ -50,13 +51,14 @@ console.log("Point 4");
 // const gitHUbProfile= fetch("api.github.com/users/sagar");
 // console.log(gitHUbProfile); //if we log immediately it will say Promise { <pending> }
 // gitHUbProfile
-//     .then((response)=>response.json())
-//     .then((userdata)=>console.log("useer Data"))
-//     .catch((err)=>console.log(err));
+//     .then((response)=>response.json()) //agar resolve ho gya toh idhr aayega data jo mila hai
+//     .then((userdata)=>console.log(userdata)) //jo data mil kr json mei change ho gya idhr aake uspe print
+//     .catch((err)=>console.log(err)); // if error aya fetch krne mei toh idhr aja
 
 // --------------------------------------------------------------------------------------------------
 
-// Promise.finally -> is defineitley run doesnt matter the resolve or reject happen it is baiclly used to hide the UI spinning/loading
+// Promise.finally -> is defineitley run doesnt matter the resolve or reject happen it is basiclly used to hide the UI spinning/loading. chae reject ho ya resolve ye jrur run krega itne show krega loading ui and jaise hi execute hua ui ht kayega
+
 // promise.all()=> takes all the promises as an array and execute them parallely and return the result
 // const fetchProfile = fetch("api/profile");
 // const fetchOrders = fetch("api/orders");
