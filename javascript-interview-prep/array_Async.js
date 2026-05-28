@@ -1,5 +1,5 @@
-// map    = transform every item
-// filter = keep selected items
+// map    = transform every item.
+// filter = keep selected items.
 // reduce = convert array into one final result
 // find   = return first matching item
 // some   = at least one true?
