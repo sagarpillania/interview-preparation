@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async Behaviour</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f4f7fb;
+        color: #18202c;
+        font-family: Arial, sans-serif;
+        padding: 24px;
+    }
+
+    .container {
+        width: min(760px, 100%);
+        min-height: 560px;
+        background: #ffffff;
+        border: 1px solid #d8e0eb;
+        border-radius: 8px;
+        box-shadow: 0 18px 40px rgba(31, 45, 61, 0.12);
+        padding: 28px;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 24px;
+    }
+
+    .balance {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+
+    .wallet,
+    .crypto {
+        min-height: 90px;
+        border: 1px solid #d8e0eb;
+        border-radius: 8px;
+        background: #fbfcfe;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wallet::before {
+        content: "Wallet Balance: $10000";
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    select {
+        width: 100%;
+        height: 42px;
+        border: 1px solid #c8d3df;
+        border-radius: 6px;
+        background: #ffffff;
+        padding: 0 12px;
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        border: 0;
+        border-radius: 6px;
+        padding: 13px 16px;
+        background: #125fd3;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-bottom: 14px;
+    }
+
+    button:hover {
+        background: #0d4dac;
+    }
+
+    #confirmOrder {
+        background: #1f8f5f;
+    }
+
+    #confirmOrder:hover {
+        background: #176d49;
+    }
+
+    .log {
+        min-height: 150px;
+        border: 1px solid #cad6e3;
+        border-radius: 8px;
+        background: #0f1724;
+        color: #dce8f7;
+        padding: 16px;
+        line-height: 1.6;
+        margin-bottom: 16px;
+        overflow: auto;
+    }
+
+    .log p {
+        padding: 5px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    #reciepts {
+        display: grid;
+        gap: 12px;
+        margin-top: 8px;
+    }
+
+    #reciepts h3,
+    #reciepts p {
+        border: 1px solid #d8e0eb;
+        background: #ffffff;
+        padding: 12px;
+    }
+
+    #reciepts h3 {
+        border-left: 5px solid #125fd3;
+        border-radius: 8px 8px 0 0;
+        font-size: 18px;
+    }
+
+    #reciepts p {
+        border-top: 0;
+        border-radius: 0 0 8px 8px;
+        color: #4a5868;
+        margin-bottom: 8px;
+    }
+
+    @media (max-width: 640px) {
+        .container {
+            padding: 18px;
+        }
+
+        .balance {
+            grid-template-columns: 1fr;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h2>Async Pipeline Dashboard</h2>
+        <div class="balance">
+            <div class="wallet"></div>
+            <div class="crypto">
+                <select name="crypto" id="crypto">
+                    <option value="BTC">BTC</option>
+                    <option value="ETH">ETH</option>
+                </select>
+            </div>
+        </div>
+        <button id="startOrder">Start Order</button>
+        <div class="log" id="log">Status Log</div>
+        <button id="confirmOrder">Confirm Order</button>
+        <div id="reciepts"></div>
+    </div>
+
+    <script>
+        let balance=10000;
+        const crypto=[{name:"BTC", price:4000}, {name:"ETH", price:12000}];
+        let currentFetchedPrice=0;
+        let currentSelectedCrypto="";
+        function checkWallet(balance,done){
+
+            setTimeout(()=>{
+                if(balance<0){
+                    done(false);
+                }
+                else{
+                    done(true);
+                }
+            },2000);
+        };
+        function fetchMarketPrice(currentSelectedCrypto,para){
+            return new Promise((resolve,reject)=>
+            {
+                setTimeout(()=>{
+                    const val=crypto.find((item)=>{ return item.name===currentSelectedCrypto});
+                    if(val) {resolve(val.price);}
+                    else{
+                        reject(`Cryptocurrency ${currentSelectedCrypto} not found in market registry.`);
+                    }
+                },3000);
+            });
+        }
+        document.getElementById("startOrder").addEventListener("click",()=>{
+            let para=document.createElement("p");
+            para.innerText="Awaiting Order Initiation.."
+            document.getElementById("log").appendChild(para);
+
+            checkWallet(balance,async (isValid)=>{
+                if(isValid){
+                    para.innerText = `Wallet Verified!=${balance}, Fetching market price...`;
+                    try{
+                        currentSelectedCrypto=document.getElementById("crypto").value;
+                        const price=await fetchMarketPrice(currentSelectedCrypto,para);
+                        currentFetchedPrice=price;
+                        para.innerText=`Price of ${currentSelectedCrypto} is ${price}`;
+                    }catch(err){
+                        para.innerText=`Error ${err}`;
+                    }
+                }
+                else{
+                    para.innerText="Error: No Balance";
+                }
+            });
+
+        });
+        document.getElementById("confirmOrder").addEventListener("click",()=>{
+            let h3=document.createElement("h3");
+            let para=document.createElement("p");
+            if(balance>=currentFetchedPrice){
+                balance=balance-currentFetchedPrice;
+                h3.innerText=`Order Executed ${currentSelectedCrypto} bought..!`;
+                para.innerText=`Remaining Balance: ${balance}`;
+            }
+            else{
+                h3.innerText="Error: Insufficient Balance. Transaction Rejected!";
+            }
+            document.getElementById("reciepts").appendChild(h3);
+            document.getElementById("reciepts").appendChild(para);
+        })
+
+    </script>
+</body>
+</html>
