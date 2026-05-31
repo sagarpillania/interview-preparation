@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <ul id="ull">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+    <div class="debouncing">
+        <input type="text" id="searchinput"/>
+        <ul id="suggestionBox"></ul>
+    </div>   
+
+    <script>
+        let eventt=document.getElementById("ull");
+        eventt.addEventListener("click",(e)=>{
+            console.log("event bubbled and captured at ",e.currentTarget.id);
+            console.log("Event clicked at ",e.target.innerText);
+        })
+
+// so we clicked at 3 but it ended and got captured at ull i.e its parent why?
+// e.target = Woh jagah jahan se shuruat hui (The Origin / Bullet kisko lagi $\rightarrow$ <li>3</li>).e.currentTarget = Woh jagah jo abhi event ko handle kar rahi hai (The Listener / Bullet ki awaz kisne suni $\rightarrow$ <ul id="ull">).
+// Isiliye aapka event khatam nahi hua, balki niche se udta hua upar aaya aur aapke parent container ne use raste mein capture kar liya!
+
+// event bubble banke upar jayega aur jahan bhi listener milega wahan execute hoga"—yeh Event Bubbling (physics) hai. and jab hum ek single parent <ul> par listener lagakar saare bachon ka kaam sambhal lete hain—toh us design pattern ko hum Event Delegation (technique) kehte hain!
+
+// Aur esa kyun krte hai? - Memory Optimization: 1000 li hai sb pr lgane se acha parent pr lga do bs..
+    // Dynamic Elements Handling:- to insert dynamically in between add 7th li between  6 & 8.
+
+// ----------DEBOUNCING----------------
+    const searchinput=document.getElementById("searchinput");
+    const ul=document.getElementById("suggestionBox");
+    let timerId;
+    const handleSearch= async (keyword)=>{
+        try{
+            const response=await fetch(`https://restcountries.com/v3.1/name/${keyword}`);
+            const res=await response.json();
+            return res; //this will retun country Array 
+        }catch(err){
+            console.log(err);
+        }
+    }
+    function handleSuggestion(e){
+        const keyword=e.target.value;
+        if(keyword==="") return;
+        clearTimeout(timerId);
+        timerId=setTimeout(async()=>{
+            const countryArr=await handleSearch(keyword); // recieved country Array 
+            if(Array.isArray(countryArr)){
+                const countryNames=countryArr.map((country)=>country.name.common); //fetched name of countries
+                countryNames.forEach((idx)=>{
+                    const li=document.createElement("li");
+                    li.innerText=idx;
+                    ul.style.display="block";
+                    ul.appendChild(li);
+                }) 
+            }
+            else{
+                const li=document.createElement("li");
+                li.innerText="COuntry Name not found";
+                ul.appendChild(li);
+            }
+        },500);
+    }
+    searchinput.addEventListener("input",handleSuggestion);
+
+    </script>
+</body>
+</html>
