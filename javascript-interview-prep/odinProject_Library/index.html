@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .container{
+            display: flex;
+            justify-self: center;
+            align-items: center;
+            flex-direction: column;
+            border: 2px solid black;
+            padding: 10px;
+            width: 70vw;
+            min-height: 40vh;
+        }
+        .opnForm{
+            visibility: hidden;
+            border: 2px solid black;
+            width: 100%;
+            height: 100%;
+        }
+        .showForm{
+            visibility: visible;
+            border: 2px solid black;
+            width: 100%;
+            height: 100%;
+        }
+        .formm{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+        }
+        table{
+            border-collapse: collapse;
+            width: 50vw;
+        }
+        th,td{
+            border: 1px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Library Management System</h1>
+        <div class="container">
+            <div class="buttn"><button id="addBook">Add Book</button></div>
+            <div class="opnForm" id="openForm">
+                <form action="submit" class="formm" id="formmmm">
+                    <div>
+                        <label for="title">Title:</label>
+                        <input type="text" placeholder="Enter Title" id="title"/>
+                    </div>
+                    <div>
+                        <label for="author">Author:</label>
+                        <input type="text" placeholder="Enter Author's Name" id="author"/>
+                    </div>
+                    <div>
+                        <label for="pages">Pages:</label>
+                        <input type="number" placeholder="Enter No. of Pages" id="pages"/>
+                    </div>
+                    <div>
+                        <p>Read the Book? </p>
+                        <input type="radio" value="yes" name="read"/>
+                        <label for="yes">Yes</label>
+                        <input type="radio" value="no" name="read" />
+                        <label for="no">No</label>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="table" id="table">
+                <table>
+                    <thead>
+                        <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Pages</th>
+                        <th>Read yet?</th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableData"></tbody>
+                </table>
+            </div>
+    <script>
+        const addBook=document.getElementById("addBook");
+        const openForm=document.getElementById("openForm");
+        const tableData=document.getElementById("tableData");
+        const action=document.getElementById("action");
+        addBook.addEventListener("click",(()=>{
+            openForm.className="showForm";
+        }));
+        let myLibrary=[];
+
+        function Book(id,title,author,pages,read){
+            this.id=id;
+            this.title=title;
+            this.author=author;
+            this.pages=pages;
+            this.read=read;
+        }
+        Book.prototype.toggleRead=function(){
+                if(this.read==="yes"){
+                    this.read="no";
+                }
+                else{
+                    this.read="yes";
+                }
+        }
+        function displayBooks(){
+            tableData.innerHTML="";
+            for(let i=0;i<myLibrary.length;i++){
+                const book=myLibrary[i];
+                let tr=document.createElement("tr");
+                tr.dataset.id = book.id;
+                tr.innerHTML=`
+                    <td>${book.id}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.pages}</td>
+                    <td>${book.read === 'yes' ? '✅ Read' : '❌ Not Read'}</td>
+                    <td><button class="deleteBtn">X</button>
+                        <button class="toggleBtn">Toggle Status</button>
+                    </td>
+                    `;
+                tableData.appendChild(tr);
+                }
+        }
+        function addBookToLibrary(){
+            const id=crypto.randomUUID();
+            const title=document.getElementById("title").value;
+            const author=document.getElementById("author").value;
+            const pages=document.getElementById("pages").value;
+            const read=document.querySelector(`input[name="read"]:checked`)?.value || "no";
+            const book=new Book(id,title,author,pages,read);
+            myLibrary.push(book)
+            console.log(myLibrary);
+            displayBooks();
+            form.reset();
+            openForm.className="opnForm";
+        }   
+        const form=document.getElementById("formmmm");
+        form.addEventListener("submit",((e)=>{
+            e.preventDefault();
+            addBookToLibrary();
+        }));
+        tableData.addEventListener("click",((e)=>{
+            if(e.target.className==="deleteBtn"){
+                const row=e.target.closest("tr");
+                const bookId=row.dataset.id;
+                myLibrary=myLibrary.filter((book)=>book.id!==bookId);
+                displayBooks();
+            }
+            if(e.target.className==="toggleBtn"){
+                const row=e.target.closest("tr");
+                const bookId=row.dataset.id;
+                let resultBook=myLibrary.find((book)=>book.id===bookId);
+                resultBook.toggleRead();
+                displayBooks();
+            }
+        }));
+    </script>
+</body>
+</html>
