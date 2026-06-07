@@ -17,7 +17,7 @@ const GameBoard = (()=>{
     };
 
     return {getBoard,placeMarker,resetBoard};   
-})(); //IIFE after intialising get called automatically
+})(); //IIFE after intialising get called automatically as soon as page reloads
 
 const Player=function player(name,marker){
     return {name,marker};
