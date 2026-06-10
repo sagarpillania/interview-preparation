@@ -1,3 +1,17 @@
+// When a function is declared with async, it automatically returns a promise; returning in an async function is the same as resolving a promise. Likewise, throwing an error will reject the promise.
+
+// const yourAsyncFunction = async () => {
+//   // do something asynchronously and return a promise
+//   return result;
+// }
+
+// anArray.forEach(async item => {
+//   // do something asynchronously for each item in 'anArray'
+//   // one could also use .map here to return an array of promises to use with 'Promise.all()'
+// });
+
+
+
 const server={
     people:[
         {
