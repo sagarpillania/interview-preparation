@@ -1,0 +1,100 @@
+:root {
+    --bg-color: #1a1a2e;
+    --card-bg: #16213e;
+    --water-color: #0f3460;
+    --ship-color: #4ecca3;
+    --hit-color: #e94560;
+    --miss-color: #53354a;
+    --text-color: #ffffff;
+    --cell-size: clamp(25px, 4vw, 30px);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.game-container {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.board-wrapper {
+    background-color: var(--card-bg);
+    padding: 14px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 400;
+    font-size: 1.15rem;
+}
+
+.grid-board {
+    display: grid;
+    grid-template-columns: repeat(10, var(--cell-size));
+    grid-template-rows: repeat(10, var(--cell-size));
+    gap: 2px;
+    background-color: #0f172a;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.cell {
+    background-color: var(--water-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.cell:hover {
+    background-color: #1f4068;
+    transform: scale(1.05);
+}
+
+.cell.ship {
+    background-color: var(--ship-color);
+    border: 1px solid #233e38;
+}
+
+.cell.hit {
+    background-color: var(--hit-color);
+    cursor: not-allowed;
+}
+
+.cell.miss {
+    background-color: var(--miss-color);
+    cursor: not-allowed;
+}

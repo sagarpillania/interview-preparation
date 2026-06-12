@@ -2,7 +2,7 @@ import Gameboard from "../src/Gameboard.js";
 import Ship from "../src/Ship.js";
 
 describe('Gameboard Factory/Class',()=>{
-    test('shoudl place the ship at specified cordinates horizontally',()=>{
+    test('should place the ship at specified cordinates horizontally',()=>{
         const board=new Gameboard();
         const ship=new Ship(3);
 
