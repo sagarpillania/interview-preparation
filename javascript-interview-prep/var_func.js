@@ -1,27 +1,28 @@
 //Js is interpreted language,is a synchronous, single-threaded language. that it is executed when it loads. it doesnt compiled beforehand like java
 // There are three etypes of variables initalizer data types in JS right var, let , const.
-//var quality= function scope, can be reassigned , can be redeclared.
-// let quality=Block scope, can be reassigned, cannot be declared in same block of scope.
-// const quality= Block scope, cant reassigned, cant be declared again
+//var quality= function scope, can be reassigned , can be redeclared. if called before intialization=undefined
+// let quality=Block scope, can be reassigned, cannot be declared in same block of scope.if called before intialization=refrenceerror (TDZ)
+// const quality= Block scope, cant reassigned, cant be declared again. if called before intialization=refrenceerror (TDZ).
 
 // function foo(){
 //     var x=1;// available inside both function
 
 //     function foo2(){
 //         var y=2; //only availble to foo2.
-//         console.log(x);//1
+//         console.log(x);//1 but if below var x=5 then it show undefined because of hoisting
 //         console.log(y);//2
 //         var x=5;
 //     }
 //     foo2();
 //     console.log(x);//1
-//     console.log(y);//not defined because of function scope. outside NA
+//     console.log(y);//not defined because of function scope. outside NA so answer is not defined because of function scope
 // }
 // foo();
 
 // so var is hoisted and it is intialized as undefined under the foo2 execution ground so when we call c.l(x) then jS starts looking for x from th nearest that is foo2 itself and it funded as undefined and print. but if it wasnt in foo2 then it would have gone outside the scope to search and print the 1.
 
 // function lett(){
+//     console.log(a); //Cannot access 'a' before initialization for both var and const
 //     let a=10;
 //      function lett2(){
 //         if(a==10){
@@ -31,7 +32,7 @@
 //         }
 //         console.log(a);
 //         console.log(b); //b is inside a block so wont be able to access it outside.
-//         let a=30;
+//         // let a=30;
 //      }
 //      lett2();
 //      console.log(a);
