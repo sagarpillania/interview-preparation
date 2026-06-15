@@ -22,7 +22,7 @@ var person={
 // var person2={...person};
 // console.log(person2);
 // person2.address.city="Panchkula";
-// console.log(person2); //it changed to pkl. because nested one still share refrence of same heap memeory
+// console.log(person); //it changed to pkl. because nested one still share refrence of same heap memeory
 
 // var person3=structuredClone(person);
 // console.log(person3);
