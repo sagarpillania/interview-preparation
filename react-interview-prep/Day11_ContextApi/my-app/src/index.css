@@ -4,12 +4,21 @@
     margin: 0;
 }
 
-.nav{
+.light,.nav{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
     background-color: darkgray;
+    
+}
+
+.dark,.nav{
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
 }
 .nav div{
     display: flex;
@@ -22,7 +31,7 @@
 }
 
 .nav div a h3 {
-    color: rgb(56, 31, 31);
+    color: rgb(249, 244, 244);
 }
 
 .courses{
