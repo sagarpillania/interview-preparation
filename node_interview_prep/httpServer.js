@@ -5,7 +5,16 @@ const server=http.createServer((req,res)=>{
 
     res.writeHead(200,{'content-type':'text/plain'});
 
-    res.end("Hello! you have succesfully reached to server");
+    if(req.url==='/'){
+        res.end("Hello! you have succesfully reached to server and this is home");
+    }
+    else if(req.url==='/movies'){
+        res.end("Hello! you have succesfully reached to server and this is movies");
+    }
+    else{
+        res.end("404 Page not Found..!!");
+    }
+
     
 });
 
@@ -13,3 +22,4 @@ server.listen(3000,()=>{
     console.log("Server is continuously listening on port 3000");
     
 })
+
