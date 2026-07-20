@@ -25,6 +25,6 @@ console.log(finalUpdate);
 
 
 
-//fs is a file system which is used to create,read,update,delete files in our syste that is our computer(hard drive).
+//fs is a file system which is used to create,read,update,delete files in our system that is our computer(hard drive).
 // When Node reads a file from a hard drive, it natively reads it as raw binary data (zeros and ones). If you leave out 'utf-8' and just run fs.readFileSync('backend-log.txt'), Node will print a <Buffer ...> filled with hexadecimal numbers. Passing 'utf-8' acts as the decoder that translates those numbers back into readable text.
 
